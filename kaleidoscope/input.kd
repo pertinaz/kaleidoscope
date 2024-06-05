@@ -1,0 +1,9 @@
+def add(a, b) a + b
+def main()
+    x = 10
+    y = 20
+    result = add(x, y)
+    if result > 10 then
+        return result
+    else
+        return 0
