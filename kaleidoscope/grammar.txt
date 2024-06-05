@@ -1,0 +1,36 @@
+start: add;
+
+// Rules
+?add: (add add_symbol)? mul;
+?mul: (mul mul_symbol)? atom;
+@atom: neg | number | '\(' add '\)';
+neg: '-' atom;
+
+// Tokens
+number: '[\d.]+';
+mul_symbol: '\*' | '/';
+add_symbol: '\+' | '-';
+
+// Extend the grammar for additional constructs
+expr: 
+    | if_expr
+    | for_expr
+    | while_expr
+    | def_expr
+    | call_expr;
+
+if_expr: 'if' expr 'then' expr 'else' expr;
+for_expr: 'for' VARIABLE '=' expr ',' expr ',' expr 'in' expr 'do' expr;
+while_expr: 'while' expr 'do' expr;
+def_expr: 'def' VARIABLE '\(' params '\)' '->' expr;
+call_expr: VARIABLE '\(' args '\)';
+
+params: VARIABLE (',' VARIABLE)*;
+args: expr (',' expr)*;
+
+VARIABLE: '[a-zA-Z_][a-zA-Z0-9_]*';
+WS: '[ \t]+' (%ignore);
+
+start: WS;
+
+expr: WS; 
