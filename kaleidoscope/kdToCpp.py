@@ -38,7 +38,6 @@ VARIABLE: '[a-zA-Z_][a-zA-Z0-9_]*';
 WS: '[ \t\r\n]+' (%ignore);
 """
 
-# Define el traductor de Kaleidoscope a C++
 class KaleidoscopeToCppTransformer(plyplus.STransformer):
     def expr(self, expr):
         if len(expr.tail) == 1:  # Es un número o una variable
@@ -70,7 +69,6 @@ class KaleidoscopeToCppTransformer(plyplus.STransformer):
     def program(self, expr):
         return '\n'.join(map(self, expr.tail))
 
-# Función para traducir un archivo de tipo Kaleidoscope a C++
 def translate_kaleidoscope_to_cpp(filename):
     with open(filename) as f:
         kaleidoscope_code = f.read()
