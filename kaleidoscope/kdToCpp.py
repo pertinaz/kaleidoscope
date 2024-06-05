@@ -1,7 +1,7 @@
 import plyplus
 
 # Define la gramática de Kaleidoscope
-kaleidoscope_grammar = """
+kaleidoscopeGrammar = """
 start: program;
 
 program: (function | expr)*;
@@ -69,12 +69,12 @@ class KaleidoscopeToCppTransformer(plyplus.STransformer):
     def program(self, expr):
         return '\n'.join(map(self, expr.tail))
 
-def translate_kaleidoscope_to_cpp(filename):
+def translateKaleidoscopeToCpp(filename):
     with open(filename) as f:
         kaleidoscope_code = f.read()
     
     # Analiza el código Kaleidoscope
-    parser = plyplus.Grammar(kaleidoscope_grammar)
+    parser = plyplus.Grammar(kaleidoscopeGrammar)
     try:
         parse_tree = parser.parse(kaleidoscope_code)
     except plyplus.parser.ParseError as e:
@@ -89,7 +89,7 @@ def translate_kaleidoscope_to_cpp(filename):
 
 # Ejemplo de uso
 if __name__ == "__main__":
-    kaleidoscope_file = "input.kd"
-    cpp_code = translate_kaleidoscope_to_cpp(kaleidoscope_file)
+    kaleidoscopeFile = "input.kd"
+    cppCode = translateKaleidoscopeToCpp(kaleidoscopeFile)
     print("C++ code:")
-    print(cpp_code)
+    print(cppCode)
