@@ -9,6 +9,14 @@ expr: VARIABLE '=' expr
     | expr '-' expr
     | expr '*' expr
     | expr '/' expr
+    | expr '<' expr
+    | expr '>' expr
+    | expr '<=' expr
+    | expr '>=' expr
+    | expr '==' expr
+    | expr '!=' expr
+    | 'if' expr 'then' expr 'else' expr
+    | 'for' VARIABLE '=' expr ',' expr ',' expr 'in' expr 'do' expr
     | '(' expr ')'
     | NUMBER
     | VARIABLE
@@ -26,6 +34,10 @@ class KaleidoscopeToCppTransformer(plyplus.STransformer):
             return expr.tail[0]
         elif len(expr.tail) == 2:  # Es una operación unaria (por ejemplo, '-' expr)
             return expr.tail[0] + self(expr.tail[1])
+        elif expr.tail[0] == 'if':  # Es una declaración if
+            return f"if ({self(expr.tail[1])}) {{ {self(expr.tail[2])} }} else {{ {self(expr.tail[3])} }}"
+        elif expr.tail[0] == 'for':  # Es un bucle for
+            return f"for ({self(expr.tail[1])}; {self(expr.tail[2])}; {self(expr.tail[3])}) {{ {self(expr.tail[6])} }}"
         else:  # Es una operación binaria (por ejemplo, expr '+' expr)
             return f"({self(expr.tail[0])} {expr.tail[1]} {self(expr.tail[2])})"
 
